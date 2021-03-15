@@ -1,7 +1,6 @@
 function Create(self)
 	self.fuzeDelayS = 3;
 	self.fuzeDelayMax = 5;
-	self.rotation = 0;
 end
 function Update(self)
 	local parent = self:GetRootParent();
