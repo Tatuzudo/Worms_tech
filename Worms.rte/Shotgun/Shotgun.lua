@@ -5,17 +5,17 @@ function Create(self)
 	--The following timer resets the fire phase when the gun is put inside an inventory
 	self.inventorySwapTimer = Timer();
 	self.inventorySwapTimer:SetSimTimeLimitMS(math.ceil(TimerMan.DeltaTimeMS));
+	self.disableControls = {Controller.WEAPON_CHANGE_NEXT, Controller.WEAPON_CHANGE_PREV, Controller.WEAPON_FIRE,
+							Controller.MOVE_LEFT, Controller.MOVE_RIGHT, 
+							Controller.BODY_JUMP, Controller.BODY_JUMPSTART, Controller.BODY_CROUCH};
 end
 function Update(self)
-	if self.RoundInMagCount == 0 then
-		self:Reload();
-	end
 	if self.fireTimer then
 		local actor = self:GetRootParent();
 		if actor and IsActor(actor) then
 			local controller = ToActor(actor):GetController();
-			--Disable all controls while firing
-			for state = 1, 40 do
+			--Disable most controls while firing
+			for _, state in pairs(self.disableControls) do
 				controller:SetState(state, false);
 			end
 			controller:SetState(Controller.AIM_SHARP, self.aiming);
@@ -35,6 +35,8 @@ function Update(self)
 		else
 			self:Deactivate();
 		end
+	elseif self.RoundInMagCount == 0 then
+		self:Reload();
 	elseif self:IsActivated() then
 		self:Deactivate();
 		self.fireTimer = Timer();

@@ -53,7 +53,7 @@ function Update(self)
 	else
 		self.GlobalAccScalar = 1
 		self:EnableEmission(false)
-		if self.DTimer:IsPastSimMS(100) then
+		if self.DTimer and self.DTimer:IsPastSimMS(100) then
 			self.Explode = true
 		end
 	end
